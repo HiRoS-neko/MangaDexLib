@@ -23,7 +23,7 @@ extension MDApi {
 
     /// Get the list of existing tags for mangas
     /// - Parameter completion: The completion block called once the request is done
-    public func getMangaTagList(completion: @escaping ([MDResult<MDTag>]?, MDApiError?) -> Void) {
+    public func getMangaTagList(completion: @escaping (MDResultList<MDTag>?, MDApiError?) -> Void) {
         let url = MDPath.getMangaTagList()
         performBasicGetCompletion(url: url, completion: completion)
     }

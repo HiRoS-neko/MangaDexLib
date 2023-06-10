@@ -144,6 +144,8 @@
 		33A6D5A526485A68007AB5B4 /* MDReadingStatuses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A6D5A326485A68007AB5B4 /* MDReadingStatuses.swift */; };
 		33FB8F9526726F7500D48312 /* MDUserFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FB8F9426726F7500D48312 /* MDUserFilter.swift */; };
 		33FB8F9626726F7500D48312 /* MDUserFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FB8F9426726F7500D48312 /* MDUserFilter.swift */; };
+		6481CEE82A350CEA00127441 /* MDMarkChapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6481CEE72A350CEA00127441 /* MDMarkChapters.swift */; };
+		6481CEE92A350CEA00127441 /* MDMarkChapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6481CEE72A350CEA00127441 /* MDMarkChapters.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -238,6 +240,7 @@
 		33A6D59D26485868007AB5B4 /* MDReadMarkers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDReadMarkers.swift; sourceTree = "<group>"; };
 		33A6D5A326485A68007AB5B4 /* MDReadingStatuses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDReadingStatuses.swift; sourceTree = "<group>"; };
 		33FB8F9426726F7500D48312 /* MDUserFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDUserFilter.swift; sourceTree = "<group>"; };
+		6481CEE72A350CEA00127441 /* MDMarkChapters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMarkChapters.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -308,6 +311,7 @@
 				338270FF265A5B8E00AB587B /* Filters */,
 				3374744726468395002114C9 /* MDAuthCredentials.swift */,
 				3317F9D8264D785D005E7380 /* MDAccountInfo.swift */,
+				6481CEE72A350CEA00127441 /* MDMarkChapters.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -686,6 +690,7 @@
 				339A33F926455162008535DA /* MDLocalizedString.swift in Sources */,
 				3317F999264D5796005E7380 /* MDCustomList.swift in Sources */,
 				3317F9DA264D785D005E7380 /* MDAccountInfo.swift in Sources */,
+				6481CEE92A350CEA00127441 /* MDMarkChapters.swift in Sources */,
 				3388B2CB2649A18D00ED77B5 /* MDAtHomeNode.swift in Sources */,
 				335F9CDB245E003E00EE9A52 /* MDExternalLink.swift in Sources */,
 				339A33FF26455817008535DA /* MDTag.swift in Sources */,
@@ -754,6 +759,7 @@
 				339A33F826455162008535DA /* MDLocalizedString.swift in Sources */,
 				3317F998264D5796005E7380 /* MDCustomList.swift in Sources */,
 				3317F9D9264D785D005E7380 /* MDAccountInfo.swift in Sources */,
+				6481CEE82A350CEA00127441 /* MDMarkChapters.swift in Sources */,
 				3388B2CA2649A18D00ED77B5 /* MDAtHomeNode.swift in Sources */,
 				339A33FE26455817008535DA /* MDTag.swift in Sources */,
 				334DE5F02644636D006D38E3 /* MDPath+Chapter.swift in Sources */,

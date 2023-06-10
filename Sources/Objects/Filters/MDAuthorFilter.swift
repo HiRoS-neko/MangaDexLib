@@ -29,6 +29,7 @@ public class MDAuthorFilter: MDPaginationFilter {
     /// Convenience init to search for authors by name
     /// - Parameter title: the title search string
     public init(name: String) {
+        super.init()
         self.name = name
     }
 

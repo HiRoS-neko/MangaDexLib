@@ -16,9 +16,8 @@ extension MDLibApiTests {
         api.getCoverList { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -34,9 +33,8 @@ extension MDLibApiTests {
         api.getCoverList(filter: filter) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             XCTAssertEqual(result?.limit, filter.limit)
             XCTAssertEqual(result?.offset, filter.offset)
             expectation.fulfill()
@@ -46,15 +44,15 @@ extension MDLibApiTests {
 
     func testViewCover() throws {
         let mangaId = "32d76d19-8a05-4db0-9fc2-e0b0648fe9d0" // Solo leveling
-        let coverId = "f219a8f4-4e87-4f8e-a28c-cfa8e78e15e6" // Solo leveling volume 1
+        let coverId = "e6583e52-1125-4c50-8db4-e8d6cf3fb144" // Solo leveling volume 1
         let expectation = self.expectation(description: "Get the cover's information")
         api.viewCover(coverId: coverId) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.object?.data)
-            XCTAssertEqual(result?.object?.data.volume, "1")
+            XCTAssertNotNil(result?.data?.attributes)
+            XCTAssertEqual(result?.data?.attributes.volume, "4")
 
-            let coverMangaId = result?.relationships?.first(where: { (relationship) -> Bool in
+            let coverMangaId = result?.data?.relationships.first(where: { (relationship) -> Bool in
                 return relationship.objectType == .manga
             })
             XCTAssertEqual(coverMangaId?.objectId, mangaId)
@@ -65,7 +63,7 @@ extension MDLibApiTests {
     }
 
     func testGetCoverImage() throws {
-        let coverId = "f219a8f4-4e87-4f8e-a28c-cfa8e78e15e6" // Solo leveling volume 1
+        let coverId = "e6583e52-1125-4c50-8db4-e8d6cf3fb144" // Solo leveling volume 1
 
         // Start by getting information about the cover
         var cover: MDCover?
@@ -74,15 +72,15 @@ extension MDLibApiTests {
         api.viewCover(coverId: coverId) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.object?.data)
-            XCTAssertEqual(result?.object?.data.volume, "1")
+            XCTAssertNotNil(result?.data?.attributes)
+            XCTAssertEqual(result?.data?.attributes.volume, "4")
 
-            let mangaRelationship = result?.relationships?.first(where: { (relationship) -> Bool in
+            let mangaRelationship = result?.data?.relationships.first(where: { (relationship) -> Bool in
                 return relationship.objectType == .manga
             })
             XCTAssertNotNil(mangaRelationship)
 
-            cover = result?.object?.data
+            cover = result?.data?.attributes
             mangaId = mangaRelationship?.objectId
             coverExpectation.fulfill()
         }

@@ -11,8 +11,10 @@ import Foundation
 /// Structure representing a list of results returned by the MangaDex API
 public struct MDResultList<T: Decodable>: Decodable {
 
+    public let result: MDResultStatus
+    
     /// The status of the result returned by the MangaDex API
-    public let results: [MDResult<T>]
+    public let data: [MDObject<T>]
 
     /// The maximum number of results returned by the MangaDex API
     public let limit: Int

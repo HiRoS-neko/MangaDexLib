@@ -16,16 +16,15 @@ extension MDLibApiTests {
         api.getChapterList { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
     }
 
     func testSearchChapters() throws {
-        throw XCTSkip("Chapter search is currently broken in the official API")
+        //throw XCTSkip("Chapter search is currently broken in the official API")
 
         let filter = MDChapterFilter(title: "Oneshot")
         filter.createdAtSince = .init(timeIntervalSince1970: 0)
@@ -36,9 +35,8 @@ extension MDLibApiTests {
         api.getChapterList(filter: filter) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             XCTAssertEqual(result?.limit, filter.limit)
             XCTAssertEqual(result?.offset, filter.offset)
             expectation.fulfill()
@@ -52,10 +50,10 @@ extension MDLibApiTests {
         api.viewChapter(chapterId: chapterId) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.object?.data)
-            XCTAssertEqual(result?.object?.data.volume, "1")
-            XCTAssertEqual(result?.object?.data.chapter, "1")
-            XCTAssertEqual(result?.object?.data.language, Locale.init(identifier: "en"))
+            XCTAssertNotNil(result?.data?.attributes)
+            XCTAssertEqual(result?.data?.attributes.volume, "1")
+            XCTAssertEqual(result?.data?.attributes.chapter, "1")
+            XCTAssertEqual(result?.data?.attributes.language, Locale.init(identifier: "en"))
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -70,11 +68,11 @@ extension MDLibApiTests {
         api.viewChapter(chapterId: chapterId) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.object?.data)
-            XCTAssertEqual(result?.object?.data.volume, "1")
-            XCTAssertEqual(result?.object?.data.chapter, "1")
-            XCTAssertEqual(result?.object?.data.language, Locale.init(identifier: "en"))
-            chapter = result?.object?.data
+            XCTAssertNotNil(result?.data?.attributes)
+            XCTAssertEqual(result?.data?.attributes.volume, "1")
+            XCTAssertEqual(result?.data?.attributes.chapter, "1")
+            XCTAssertEqual(result?.data?.attributes.language, Locale.init(identifier: "en"))
+            chapter = result?.data?.attributes
             mangaExpectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -94,21 +92,21 @@ extension MDLibApiTests {
         guard chapter != nil, node != nil else {
             return
         }
-        let urls = chapter?.getPageUrls(node: node!, lowRes: false)
+        let urls = chapter?.getPageUrls(details: node!, lowRes: false)
         XCTAssertNotNil(urls)
         XCTAssert(urls!.count > 0)
     }
 
     func testMarkUnmarkChapter() throws {
-        throw XCTSkip("The API is currently in readonly mode")
+        //throw XCTSkip("The API is currently in readonly mode")
 
         try login(api: api, credentialsKey: "AuthRegular")
-        let mangaId = "0001183c-2089-48e9-96b7-d48db5f1a611" // Boku No Hero Academia
-        let chapterId = "cb46d8e3-629b-461e-97e3-594f3ac9c982" // Volume 23 chapter 224 (de)
+        let mangaId = "32d76d19-8a05-4db0-9fc2-e0b0648fe9d0" // Solo Leveling
+        let chapterId = "c2d7b64f-d4b7-44d1-81a7-790bb39a4979" // Chapter 200, Sidestory (21)
 
         // Assume the chapter wasn't read by the test user
         let readExpectation = self.expectation(description: "Mark the chapter as read")
-        api.markChapterRead(chapterId: chapterId) { (error) in
+        api.markChapterRead(mangaId: mangaId, chapterId: chapterId) { (error) in
             XCTAssertNil(error)
             readExpectation.fulfill()
         }
@@ -126,7 +124,7 @@ extension MDLibApiTests {
 
         // Unfollow the manga to cleanup
         let unreadExpectation = self.expectation(description: "Mark the chapter as unread")
-        api.markChapterUnread(chapterId: chapterId) { (error) in
+        api.markChapterUnread(mangaId: mangaId, chapterId: chapterId) { (error) in
             XCTAssertNil(error)
             unreadExpectation.fulfill()
         }

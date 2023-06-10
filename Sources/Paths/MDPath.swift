@@ -10,7 +10,7 @@ import Foundation
 
 /// The class responsible for generating URLs for calls to the website and API
 class MDPath {
-
+    
     /// Build a list of URLQueryItems representing an array of string enums
     /// - Parameter name: The name of the query item
     /// - Parameter array: The values to encode
@@ -22,7 +22,7 @@ class MDPath {
         }
         return formatQueryItem(name: name, array: values.map { $0.rawValue })
     }
-
+    
     /// Build a list of URLQueryItems representing an array of strings
     /// - Parameter name: The name of the query item
     /// - Parameter array: The values to encode
@@ -34,7 +34,7 @@ class MDPath {
         }
         return out
     }
-
+    
     /// Build an absolute URL with the given base URL and paths
     /// - Parameter endpoint: The relative path of the resource
     /// - Returns: The MangaDex URL
@@ -45,7 +45,7 @@ class MDPath {
         }
         return url
     }
-
+    
     /// Build an absolute URL with the known base, the given parameters, and additionaly query items
     /// - Parameter endpoint: The relative path of the resource
     /// - Parameter components: The list of integer components to add, seperated by `/`
@@ -59,19 +59,24 @@ class MDPath {
             return String(component.description)
         }
         let baseUrl = buildUrl(for: URL(string: MDApi.apiBaseURL)!, with: [endpoint.rawValue] + stringComponents)
-
+        
         // Use URLComponents to safely handle the params
         var urlComp = URLComponents(url: baseUrl, resolvingAgainstBaseURL: false)!
-
-        // Remove keys with empty values
-        urlComp.queryItems = []
-        for param in params where (param.value != nil && !param.value!.isEmpty) {
-            urlComp.queryItems?.append(param)
+        
+        guard params.isEmpty else {
+            
+            
+            // Remove keys with empty values
+            urlComp.queryItems = []
+            for param in params where (param.value != nil && !param.value!.isEmpty) {
+                urlComp.queryItems?.append(param)
+            }
+            
+            // We manually have to escape the "+" for some reason...
+            urlComp.percentEncodedQuery = urlComp.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
+            return urlComp.url!
         }
-
-        // We manually have to escape the "+" for some reason...
-        urlComp.percentEncodedQuery = urlComp.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
         return urlComp.url!
     }
-
+    
 }

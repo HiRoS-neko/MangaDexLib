@@ -46,15 +46,15 @@ extension MDPath {
     /// Build the URL to mark the specified chapter as read for the logged-in user
     /// - Parameter chapterId: The id of the chapter
     /// - Returns: The MangaDex URL
-    static func markChapterRead(chapterId: String) -> URL {
-        return buildUrl(for: .chapter, with: [chapterId, "read"])
+    static func markChapterRead(mangaId: String) -> URL {
+        return buildUrl(for: .manga, with: [mangaId, "read"])
     }
 
     /// Build the URL to mark the specified chapter as unread for the logged-in user
     /// - Parameter chapterId: The id of the chapter
     /// - Returns: The MangaDex URL
-    static func markChapterUnread(chapterId: String) -> URL {
-        return buildUrl(for: .chapter, with: [chapterId, "read"])
+    static func markChapterUnread(mangaId: String) -> URL {
+        return buildUrl(for: .manga, with: [mangaId, "read"])
     }
 
     /// Build the URL to get a chapter's page images
@@ -68,6 +68,10 @@ extension MDPath {
     static func getChapterPage(baseURL: URL, chapterHash: String, pageId: String, lowRes: Bool) -> URL {
         let endpoint = lowRes ? "data-saver" : "data"
         return buildUrl(for: baseURL, with: [endpoint, chapterHash, pageId])
+    }
+    
+    static func getChapterPageUri(baseURL: URL) -> URL {
+        return buildUrl(for: baseURL, with: ["at-home", "server"])
     }
 
 }

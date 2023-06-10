@@ -26,6 +26,7 @@ public class MDGroupFilter: MDPaginationFilter {
     /// Convenience init to search for scanlation groups by name
     /// - Parameter title: the title search string
     public init(name: String) {
+        super.init()
         self.name = name
     }
 

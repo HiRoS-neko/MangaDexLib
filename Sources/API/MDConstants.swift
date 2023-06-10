@@ -111,7 +111,16 @@ public enum MDObjectType: String, Codable {
 
     /// The resource is a user
     case user = "user"
+    
+    /// The resource is a creator
+    case creator = "creator"
 
+    /// The resource is a member
+    case member = "member"
+    
+    /// The resource is a leader
+    case leader = "leader"
+    
     /// The resource is a user's custom list
     case customList = "custom_list"
 
@@ -204,7 +213,7 @@ public enum MDExternalLinkType: String, Codable {
 /// Types of result status the MangaDex API may return
 public enum MDResultStatus: String, Codable {
     /// The result contains valid data
-    case ok
+    case ok = "ok"
 
     /// The result contains at least one error
     case error = "error"

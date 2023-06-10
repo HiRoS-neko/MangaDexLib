@@ -17,9 +17,8 @@ extension MDLibApiTests {
         api.getUserList { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -35,9 +34,8 @@ extension MDLibApiTests {
         api.getUserList(filter: filter) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             XCTAssertEqual(result?.limit, filter.limit)
             XCTAssertEqual(result?.offset, filter.offset)
             expectation.fulfill()
@@ -51,8 +49,8 @@ extension MDLibApiTests {
         api.viewUser(userId: userId) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.object?.data)
-            XCTAssertEqual(result?.object?.data.username, "MangaDexLib")
+            XCTAssertNotNil(result?.data?.attributes)
+            XCTAssertEqual(result?.data?.attributes.username, "MangaDexLib")
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -65,7 +63,7 @@ extension MDLibApiTests {
         api.getUserCustomLists(userId: userId) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.results)
+            XCTAssertNotNil(result?.data)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -77,7 +75,7 @@ extension MDLibApiTests {
         api.viewLoggedUser { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.object?.data)
+            XCTAssertNotNil(result?.data?.attributes)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -89,10 +87,9 @@ extension MDLibApiTests {
         api.getLoggedUserFollowedMangaList { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.results)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssertNotNil(result?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -104,10 +101,9 @@ extension MDLibApiTests {
         api.getLoggedUserFollowedMangaFeed { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.results)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssertNotNil(result?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -119,7 +115,7 @@ extension MDLibApiTests {
         api.getLoggedUserFollowedGroupList { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.results)
+            XCTAssertNotNil(result?.data)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -131,7 +127,7 @@ extension MDLibApiTests {
         api.getLoggedUserFollowedUserList { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.results)
+            XCTAssertNotNil(result?.data)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -143,7 +139,7 @@ extension MDLibApiTests {
         api.getLoggedUserCustomLists { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.results)
+            XCTAssertNotNil(result?.data)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)

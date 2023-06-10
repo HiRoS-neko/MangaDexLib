@@ -34,6 +34,7 @@ public class MDFeedFilter: MDPaginationFilter {
     /// Convenience init to filter feeds by language
     /// - Parameter locales: the locales to allow
     public init(locales: [Locale]) {
+        super.init()
         self.translatedLanguage = locales
     }
 

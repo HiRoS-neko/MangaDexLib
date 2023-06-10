@@ -16,9 +16,8 @@ extension MDLibApiTests {
         api.getMangaList { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             mangaExpectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -34,9 +33,8 @@ extension MDLibApiTests {
         api.getMangaList(filter: filter) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             XCTAssertEqual(result?.limit, filter.limit)
             XCTAssertEqual(result?.offset, filter.offset)
             expectation.fulfill()
@@ -52,12 +50,11 @@ extension MDLibApiTests {
         api.getMangaList(includes: includes) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssert(result!.results.count > 0)
-            for manga in result!.results {
+            XCTAssert(result!.data.count > 0)
+            for manga in result!.data {
                 XCTAssertNotNil(manga.relationships)
-                XCTAssertNotNil(manga.object)
-                XCTAssertNotNil(manga.object?.data)
-                let relationshipTypes = manga.relationships!.map { $0.objectType }
+                XCTAssertNotNil(manga.attributes)
+                let relationshipTypes = manga.relationships.map { $0.objectType }
                 for objType in includes {
                     XCTAssert(relationshipTypes.contains(objType))
                 }
@@ -69,12 +66,11 @@ extension MDLibApiTests {
 
     func testGetMangaTagList() throws {
         let expectation = self.expectation(description: "Get a list of manga tags")
-        api.getMangaTagList { (results, error) in
+        api.getMangaTagList { (result, error) in
             XCTAssertNil(error)
-            XCTAssertNotNil(results)
-            XCTAssert(results!.count > 0)
-            XCTAssertNotNil(results?.first?.object)
-            XCTAssertNotNil(results?.first?.object?.data)
+            XCTAssertNotNil(result)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -85,8 +81,8 @@ extension MDLibApiTests {
         api.getRandomManga { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.object)
-            XCTAssertNotNil(result?.object?.data)
+            XCTAssertNotNil(result?.data)
+            XCTAssertNotNil(result?.data?.attributes)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -98,17 +94,15 @@ extension MDLibApiTests {
         api.viewManga(mangaId: mangaId) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.object?.data)
-            XCTAssertEqual(result?.object?.data.title.translations.first?.value, "Official \"Test\" Manga")
-            XCTAssertEqual(result?.object?.data.altTitles.first?.translations.first?.value, "TEST")
+            XCTAssertNotNil(result?.data?.attributes)
+            XCTAssertEqual(result?.data?.attributes.title.translations.first?.value, "Official \"Test\" Manga")
+            XCTAssertEqual(result?.data?.attributes.altTitles.first?.translations.first?.value, "TEST edited")
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
     }
 
     func testFollowUnfollowManga() throws {
-        throw XCTSkip("The API is currently in readonly mode")
-
         try login(api: api, credentialsKey: "AuthRegular")
         let mangaId = "f9c33607-9180-4ba6-b85c-e4b5faee7192" // Official "Test" Manga
 
@@ -122,12 +116,12 @@ extension MDLibApiTests {
 
         // List the user's followed mangas and check it was added
         let listFollowExpectation1 = self.expectation(description: "List the user's followed mangas")
-        api.getLoggedUserFollowedMangaList { (result, error) in
+        api.getLoggedUserFollowedMangaList(pagination: MDPaginationFilter(limit: 100)) { (result, error) in
             XCTAssertNil(error)
 
             var followedMangaIds: [String] = []
-            for manga in result?.results ?? [] {
-                followedMangaIds.append(manga.object?.objectId ?? "")
+            for manga in result?.data ?? [] {
+                followedMangaIds.append(manga.objectId)
             }
             XCTAssertTrue(followedMangaIds.contains(mangaId))
             listFollowExpectation1.fulfill()
@@ -147,8 +141,8 @@ extension MDLibApiTests {
             XCTAssertNil(error)
 
             var followedMangaIds: [String] = []
-            for manga in result?.results ?? [] {
-                followedMangaIds.append(manga.object?.objectId ?? "")
+            for manga in result?.data ?? [] {
+                followedMangaIds.append(manga.objectId)
             }
             XCTAssertFalse(followedMangaIds.contains(mangaId))
             listFollowExpectation2.fulfill()
@@ -162,9 +156,8 @@ extension MDLibApiTests {
         api.getMangaFeed(mangaId: mangaId) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)

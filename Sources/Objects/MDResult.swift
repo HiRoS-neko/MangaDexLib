@@ -12,15 +12,11 @@ import Foundation
 public struct MDResult<T: Decodable>: Decodable {
 
     /// The status of the result returned by the MangaDex API
-    public let status: MDResultStatus
+    public let result: MDResultStatus
 
     /// The decoded object contained in this response
     /// - Note: This will be `nil` if the status is not `ok`
-    public let object: MDObject<T>?
-
-    /// The relationships contained in this response
-    /// - Note: This will be `nil` if the status is not `ok`
-    public let relationships: [MDRelationship]?
+    public let data: MDObject<T>?
 
     /// The token information returned during authentication
     /// - Note: This will be nil for requests outside of the `auth` endpoint
@@ -39,9 +35,8 @@ extension MDResult {
 
     /// Coding keys to map JSON data to our struct
     enum CodingKeys: String, CodingKey {
-        case status = "result"
-        case object = "data"
-        case relationships
+        case result = "result"
+        case data = "data"
         case token
         case message
         case errors

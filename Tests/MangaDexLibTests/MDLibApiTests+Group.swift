@@ -16,9 +16,8 @@ extension MDLibApiTests {
         api.getGroupList { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -33,9 +32,8 @@ extension MDLibApiTests {
         api.getGroupList(filter: filter) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             XCTAssertEqual(result?.limit, filter.limit)
             XCTAssertEqual(result?.offset, filter.offset)
             expectation.fulfill()
@@ -49,17 +47,15 @@ extension MDLibApiTests {
         api.viewGroup(groupId: groupId) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.object?.data)
-            XCTAssertEqual(result?.object?.data.name, "MangaDex Scans")
-            XCTAssertEqual(result?.object?.data.leader.objectId, "17179fd6-77fb-484a-a543-aaea12511c07")
-            XCTAssert(result!.object!.data.members.count > 0)
+            XCTAssertNotNil(result?.data?.attributes)
+            XCTAssertEqual(result?.data?.attributes.name, "MangaDex Scans")
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
     }
 
     func testFollowUnfollowGroup() throws {
-        throw XCTSkip("The API is currently in readonly mode")
+        //throw XCTSkip("The API is currently in readonly mode")
 
         try login(api: api, credentialsKey: "AuthRegular")
         let groupId = "b8a6d1fc-1634-47a8-98cf-2ea3f5fef8b3" // MangaDex Scans
@@ -78,8 +74,8 @@ extension MDLibApiTests {
             XCTAssertNil(error)
 
             var followedGroupIds: [String] = []
-            for group in result?.results ?? [] {
-                followedGroupIds.append(group.object?.objectId ?? "")
+            for group in result?.data ?? [] {
+                followedGroupIds.append(group.objectId)
             }
             XCTAssertTrue(followedGroupIds.contains(groupId))
             listFollowExpectation1.fulfill()
@@ -100,8 +96,8 @@ extension MDLibApiTests {
             XCTAssertNil(error)
 
             var followedGroupIds: [String] = []
-            for group in result?.results ?? [] {
-                followedGroupIds.append(group.object?.objectId ?? "")
+            for group in result?.data ?? [] {
+                followedGroupIds.append(group.objectId)
             }
             XCTAssertTrue(followedGroupIds.contains(groupId))
             listFollowExpectation2.fulfill()

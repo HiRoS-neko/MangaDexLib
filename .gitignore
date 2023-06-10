@@ -105,3 +105,4 @@ docs/
 
 # Test credentials
 Secret.bundle
+Tests/.DS_Store

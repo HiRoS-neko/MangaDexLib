@@ -19,7 +19,7 @@ public struct MDAuthor {
     public var imageURL: URL?
 
     /// The author's biography
-    public let biography: [MDLocalizedString]
+    public let biography: MDLocalizedString?
 
     /// The date at which this author entry was created on MangaDex
     public let createdDate: Date
@@ -55,7 +55,7 @@ extension MDAuthor: Encodable {
 
         // Unused during upload
         imageURL = nil
-        biography = []
+        biography = nil
         createdDate = .init()
         updatedDate = nil
 

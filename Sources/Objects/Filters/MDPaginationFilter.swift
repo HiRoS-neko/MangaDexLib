@@ -38,6 +38,11 @@ public class MDPaginationFilter: Encodable {
         return params
     }
 
+    public init(limit: Int, offset: Int = 0){
+        self.limit = limit
+        self.offset = offset
+    }
+    
     /// Convenience function to create an empty filter
     public init() {
     }

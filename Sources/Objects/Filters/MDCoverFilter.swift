@@ -33,6 +33,7 @@ public class MDCoverFilter: MDPaginationFilter {
     /// Convenience init to filter covers by manga
     /// - Parameter mangas: the list of mangaIds for which covers should be listed
     public init(mangas: [String]) {
+        super.init()
         self.mangas = mangas
     }
 

@@ -70,6 +70,7 @@ public class MDMangaFilter: MDPaginationFilter {
     /// Convenience init to search for mangas by title
     /// - Parameter title: the title search string
     public init(title: String) {
+        super.init()
         self.title = title
     }
 

@@ -20,7 +20,9 @@ public struct MDObject<T: Decodable>: Decodable {
     /// The data returned by the API
     ///
     /// This is decoded as one of MangaDexLib's structures for ease of use
-    public let data: T
+    public let attributes: T
+    
+    public let relationships : [MDRelationship]
 
 }
 
@@ -30,7 +32,8 @@ extension MDObject {
     enum CodingKeys: String, CodingKey {
         case objectId = "id"
         case objectType = "type"
-        case data = "attributes"
+        case attributes = "attributes"
+        case relationships
     }
 
 }

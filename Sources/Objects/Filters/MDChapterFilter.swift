@@ -56,6 +56,7 @@ public class MDChapterFilter: MDPaginationFilter {
     /// Convenience init to search for chapters by title
     /// - Parameter title: the title search string
     public init(title: String) {
+        super.init()
         self.title = title
     }
 

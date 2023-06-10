@@ -29,7 +29,7 @@ extension MDLibApiTests {
             XCTAssertNil(error)
             XCTAssertNotNil(result)
             XCTAssertEqual(result?.count, 1)
-            XCTAssert(result?.first?.object?.data.newId == "c0ee660b-f9f2-45c3-8068-5123ff53f84a")
+            XCTAssert(result?.first?.data?.attributes.newId == "c0ee660b-f9f2-45c3-8068-5123ff53f84a")
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -48,7 +48,7 @@ extension MDLibApiTests {
         var chapter: MDChapter?
         let mangaExpectation = self.expectation(description: "Get the chapter's information")
         api.viewChapter(chapterId: chapterId) { (result, _) in
-            chapter = result?.object?.data
+            chapter = result?.data?.attributes
             mangaExpectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -69,7 +69,7 @@ extension MDLibApiTests {
         // Now get the URLs for the pages
         XCTAssertNotNil(chapter)
         XCTAssertNotNil(node)
-        let urls = chapter?.getPageUrls(node: node!, lowRes: false)
+        let urls = chapter?.getPageUrls(details: node!, lowRes: false)
         XCTAssertNotNil(urls)
         XCTAssertNotNil(urls?.first)
 

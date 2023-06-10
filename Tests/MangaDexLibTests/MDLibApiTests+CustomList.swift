@@ -23,8 +23,8 @@ extension MDLibApiTests {
         let createExpectation = self.expectation(description: "Create a new custom list")
         api.createCustomList(info: info) { (result, error) in
             XCTAssertNil(error)
-            XCTAssertNotNil(result?.object)
-            createdListId = result?.object?.objectId
+            XCTAssertNotNil(result?.data)
+            createdListId = result?.data?.objectId
             createExpectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -37,8 +37,8 @@ extension MDLibApiTests {
             XCTAssertNil(error)
 
             var customListIds: [String] = []
-            for list in result?.results ?? [] {
-                customListIds.append(list.object?.objectId ?? "")
+            for list in result?.data ?? [] {
+                customListIds.append(list.objectId)
             }
             XCTAssertTrue(customListIds.contains(createdListId!))
             listExpectation1.fulfill()
@@ -59,8 +59,8 @@ extension MDLibApiTests {
             XCTAssertNil(error)
 
             var customListIds: [String] = []
-            for list in result?.results ?? [] {
-                customListIds.append(list.object?.objectId ?? "")
+            for list in result?.data ?? [] {
+                customListIds.append(list.objectId)
             }
             XCTAssertFalse(customListIds.contains(createdListId!))
             listExpectation2.fulfill()
@@ -77,8 +77,8 @@ extension MDLibApiTests {
         api.viewCustomList(listId: listId) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssertNotNil(result?.object?.data)
-            XCTAssertEqual(result?.object?.data.name, "ONE")
+            XCTAssertNotNil(result?.data?.attributes)
+            XCTAssertEqual(result?.data?.attributes.name, "ONE")
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
@@ -93,9 +93,8 @@ extension MDLibApiTests {
         api.getCustomListFeed(listId: listId) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)
-            XCTAssert(result!.results.count > 0)
-            XCTAssertNotNil(result?.results.first?.object)
-            XCTAssertNotNil(result?.results.first?.object?.data)
+            XCTAssert(result!.data.count > 0)
+            XCTAssertNotNil(result?.data.first?.attributes)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 15, handler: nil)
