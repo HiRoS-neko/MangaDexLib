@@ -101,6 +101,25 @@ extension MDLibApiTests {
         }
         waitForExpectations(timeout: 15, handler: nil)
     }
+    
+    func testGetCoverArt() throws {
+        let mangaId = "f9c33607-9180-4ba6-b85c-e4b5faee7192" // Official "Test" Manga
+        let expectation = self.expectation(description: "Get the manga's cover art uri")
+        var mangaCoverArt : MDCover?
+        api.viewManga(mangaId: mangaId, includes: [.cover_art]) { (result, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(result)
+            XCTAssertNotNil(result?.data?.attributes)
+            mangaCoverArt = result?.data!.relationships.first(where: { (relationship) -> Bool in
+                return relationship.objectType == .cover_art
+            })?.attributes as? MDCover
+            let uri =  mangaCoverArt?.getCoverUrl(mangaId: mangaId)
+            XCTAssertNotNil(uri)
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 15, handler: nil)
+    }
 
     func testFollowUnfollowManga() throws {
         try login(api: api, credentialsKey: "AuthRegular")

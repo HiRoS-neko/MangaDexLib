@@ -10,7 +10,7 @@ import Foundation
 
 /// Structure representing a custom list returned by MangaDex
 /// This is passed in the `data` property of an `MDObject`
-public struct MDCustomList {
+public struct MDCustomList: MDAttributes  {
 
     /// The custom list's name
     public let name: String

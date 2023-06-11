@@ -10,7 +10,7 @@ import Foundation
 
 /// Structure representing a mapping between a legacy ID and a new ID
 /// This is passed in the `data` property of an `MDObject`
-public struct MDMapping: Decodable {
+public struct MDMapping: Decodable, MDAttributes  {
 
     /// The type of object mapped
     public let type: MDObjectType

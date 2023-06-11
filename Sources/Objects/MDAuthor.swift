@@ -10,7 +10,7 @@ import Foundation
 
 /// Structure representing an author returned by MangaDex
 /// This is passed in the `data` property of an `MDObject`
-public struct MDAuthor {
+public struct MDAuthor: MDAttributes {
 
     /// The author's name
     public let name: String

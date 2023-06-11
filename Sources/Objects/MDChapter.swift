@@ -10,7 +10,7 @@ import Foundation
 
 /// Structure representing a manga chapter returned by MangaDex
 /// This is passed in the `data` property of an `MDObject`
-public struct MDChapter {
+public struct MDChapter: MDAttributes  {
     
     /// The chapter's title
     public let title: String?

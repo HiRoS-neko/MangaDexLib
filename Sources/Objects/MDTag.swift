@@ -10,7 +10,7 @@ import Foundation
 
 /// Structure representing a tag returned by MangaDex
 /// This is passed in the `data` property of an `MDObject`
-public struct MDTag: Decodable {
+public struct MDTag: Decodable, MDAttributes  {
 
     /// The tag's name
     public let name: MDLocalizedString

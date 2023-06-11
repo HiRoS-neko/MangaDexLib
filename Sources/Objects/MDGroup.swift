@@ -10,7 +10,7 @@ import Foundation
 
 /// Structure representing a group returned by MangaDex
 /// This is passed in the `data` property of an `MDObject`
-public struct MDGroup {
+public struct MDGroup: MDAttributes  {
     
     /// The group's name
     public let name: String

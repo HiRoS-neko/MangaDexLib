@@ -10,7 +10,7 @@ import Foundation
 
 /// Structure representing a user returned by MangaDex
 /// This is passed in the `data` property of an `MDObject`
-public struct MDUser: Decodable {
+public struct MDUser: Decodable, MDAttributes {
 
     /// the logged-in user's display name
     public let username: String?

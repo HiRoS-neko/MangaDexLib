@@ -37,3 +37,8 @@ extension MDObject {
     }
 
 }
+
+
+public protocol MDAttributes {
+    
+}

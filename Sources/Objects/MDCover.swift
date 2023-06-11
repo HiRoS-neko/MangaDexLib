@@ -10,7 +10,7 @@ import Foundation
 
 /// Structure representing a cover returned by MangaDex
 /// This is passed in the `data` property of an `MDObject`
-public struct MDCover {
+public struct MDCover: MDAttributes  {
 
     /// The volume this cover belongs to, if entered by the uploader
     public let volume: String?
