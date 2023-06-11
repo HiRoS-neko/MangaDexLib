@@ -9,25 +9,33 @@
 import Foundation
 
 /// Structure representing an object returned by the MangaDex API
-public struct MDObject<T: Decodable>: Decodable {
-
+public struct MDObject<T: Decodable>: Decodable, Hashable {
+    
     /// This object's ID
     public let objectId: String
-
+    
     /// The kind of object encoded
     public let objectType: MDObjectType
-
+    
     /// The data returned by the API
     ///
     /// This is decoded as one of MangaDexLib's structures for ease of use
     public let attributes: T
     
     public let relationships : [MDRelationship]
-
+    
+    public static func == (lhs: MDObject, rhs: MDObject) -> Bool {
+        return lhs.objectType == rhs.objectType && lhs.objectId == rhs.objectId
+    }
+    
+    
+    public  func hash(into hasher: inout Hasher) {
+        hasher.combine(objectId)
+    }
 }
 
 extension MDObject {
-
+    
     /// Coding keys to map JSON data to our struct
     enum CodingKeys: String, CodingKey {
         case objectId = "id"
@@ -35,7 +43,7 @@ extension MDObject {
         case attributes = "attributes"
         case relationships
     }
-
+    
 }
 
 
