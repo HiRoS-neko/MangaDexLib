@@ -19,8 +19,8 @@ Pod::Spec.new do |spec|
   spec.author       = "Jean-Romain Garnier"
   spec.source       = { :git => "https://github.com/JRomainG/MangaDexLib.git", :tag => "v" + spec.version.to_s }
 
-  spec.ios.deployment_target = "12.0"
-  spec.osx.deployment_target = "10.12"
+  spec.ios.deployment_target = "16.0"
+  spec.osx.deployment_target = "13.0"
   spec.source_files   = "Sources/**/*.swift"
   spec.swift_versions = ["5.0", "5.1", "5.2"]
 

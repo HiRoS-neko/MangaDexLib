@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RegexBuilder
 
 /// Structure representing a manga chapter returned by MangaDex
 /// This is passed in the `data` property of an `MDObject`
@@ -38,6 +39,8 @@ public struct MDChapter: MDAttributes  {
     
     /// The version of this type of object in the MangaDex API
     public let version: Int
+    
+    public let chapterNumber : MDChapterNumber
     
     /// The list of page URLs for this chapter using the specified node URL
     /// - Parameter node: The URL of the server to use to fetch these images
@@ -88,6 +91,7 @@ extension MDChapter: Decodable {
         } else {
             language = nil
         }
+        chapterNumber = MDChapterNumber(chapter: chapter, volume: volume)
     }
     
 }
@@ -111,6 +115,8 @@ extension MDChapter: Encodable {
         
         // Hardcoded based on the API version we support
         version = 1
+        
+        chapterNumber = MDChapterNumber(chapter: chapter, volume: volume)
     }
     
     /// Custom `encode` implementation to handle encoding the `language` attribute
@@ -128,5 +134,152 @@ extension MDChapter: Encodable {
         // The language cannot be nil when uploading a chapter
         try container.encode(language!.identifier, forKey: .language)
     }
+    
+}
+
+public struct MDNumber : Comparable {
+    public static func < (lhs: MDNumber, rhs: MDNumber) -> Bool {
+        if lhs.number < rhs.number { //if it is from a previous chapter, then it is less
+            return true
+        }
+        if lhs.number == rhs.number && (lhs.part != nil && rhs.part != nil && lhs.part! < rhs.part!) { //if it is from the same chapter, put the part is less, then it is less
+            return true
+        }
+        return false
+    }
+    
+    public static func > (lhs: MDNumber, rhs: MDNumber) -> Bool {
+        if lhs.number > rhs.number { //if it is from a previous chapter, then it is less
+            return true
+        }
+        if lhs.number == rhs.number && (lhs.part != nil && rhs.part != nil && lhs.part! > rhs.part!) { //if it is from the same chapter, put the part is less, then it is less
+            return true
+        }
+        return false
+    }
+    
+    public static func == (lhs: MDNumber, rhs: MDNumber) -> Bool {
+        return lhs.number == rhs.number && (lhs.part == nil && rhs.part == nil || lhs.part == rhs.part)
+    }
+    
+    public let number : Int
+    public let part : Int?
+    
+    
+    init(number : Int, part :Int? = nil){
+        self.number = number
+        self.part = part
+    }
+    
+    init(name : String?)
+    {
+        if name == nil {
+            self.number = 0
+            self.part = nil
+        }
+        else if name!.contains(chapterNumber) {
+            var simple = name!.firstMatch(of: chapterNumber)
+            (_, self.number) = simple!.output
+            self.part = nil
+        }
+        else if name!.contains(chapterNumberWithDecimal) {
+            var matches = name!.firstMatch(of: chapterNumberWithDecimal)
+            (_, self.number, self.part) = matches!.output
+        }
+        else if name!.contains(chapterNumberWithLetterPart) {
+            var letterMatch = name!.firstMatch(of: chapterNumberWithLetterPart)
+            (_, self.number, self.part) = letterMatch!.output
+        }
+        else {
+            self.number = Int(name!) ?? 1
+            self.part = nil
+        }
+        
+    }
+    
+    let chapterNumber = Regex {
+        TryCapture {
+            OneOrMore(.digit)
+        } transform: { match in
+            Int(match)
+        }
+    }
+    
+    let chapterNumberWithDecimal = Regex {
+        TryCapture {
+            OneOrMore(.digit)
+        } transform: { match in
+            Int(match)
+        }
+        OneOrMore(.digit.inverted)
+        Capture {
+            OneOrMore(.digit)
+        } transform: { match in
+            Int(match)
+        }
+    }
+    
+    let chapterNumberWithLetterPart = Regex{
+        TryCapture {
+            OneOrMore(.digit)
+        } transform: { match in
+            Int(match)
+        }
+        ZeroOrMore(.any)
+        Capture {
+            One(.word)
+        } transform: { match in
+            Int(match.lowercased().first!.asciiValue! - 96)
+        }
+    }
+}
+
+
+public struct MDChapterNumber : Comparable {
+    public static func < (lhs: MDChapterNumber, rhs: MDChapterNumber) -> Bool {
+        if lhs == rhs { //if they are the same, it is not less
+            return false
+        }
+        if lhs.chapter < rhs.chapter { //if it is from a previous chapter, then it is less
+            return true
+        }
+        return false
+    }
+    
+    public static func > (lhs: MDChapterNumber, rhs: MDChapterNumber) -> Bool {
+        if lhs == rhs { //if they are the same, it is not less
+            return false
+        }
+        if lhs.chapter > rhs.chapter { //if it is from a previous chapter, then it is less
+            return true
+        }
+        return false
+    }
+    
+    public static func == (lhs: MDChapterNumber, rhs: MDChapterNumber) -> Bool {
+        return lhs.chapter == rhs.chapter && (lhs.volume == nil || rhs.volume == nil || lhs.volume == rhs.volume)
+    }
+    
+    public let volume : MDNumber?
+    public let chapter: MDNumber
+
+    
+    init(chapter : String?, volume : String?)
+    {
+        if volume != nil {
+            self.volume = MDNumber(name:volume)
+        }
+        else{
+            self.volume = nil
+        }
+        if chapter == nil {
+            self.chapter = MDNumber(number: 1)
+        }
+        else {
+            self.chapter = MDNumber(name:chapter)
+        }
+        
+    }
+    
     
 }

@@ -150,7 +150,7 @@ extension MDApi {
                                            completion: @escaping (MDAggregate?, MDApiError?) -> Void) {
         var langCodes: [String] = []
         for locale in languages ?? [] {
-            langCodes.append(locale.languageCode!)
+            langCodes.append(locale.language.languageCode!.identifier)
         }
         let url = MDPath.getMangaVolumesAndChapters(mangaId: mangaId, languages: langCodes)
         performBasicGetCompletion(url: url, completion: completion)

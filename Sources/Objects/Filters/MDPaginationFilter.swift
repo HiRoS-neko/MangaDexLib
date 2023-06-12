@@ -74,7 +74,7 @@ public class MDPaginationFilter: Encodable {
                                        to container: inout KeyedEncodingContainer<CodingKeys>) throws {
         for i in 0..<locales.count {
             let valKey = CodingKeys(stringValue: "\(key.stringValue)[\(i)]")!
-            try container.encode(locales[i].languageCode, forKey: valKey)
+            try container.encode(locales[i].language.languageCode!.identifier, forKey: valKey)
         }
     }
 
