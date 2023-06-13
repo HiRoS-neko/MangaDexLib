@@ -10,26 +10,26 @@ import Foundation
 
 /// The main MangaDex API class, which should be used to access the framework's capabilities
 public class MDApi: NSObject {
-
+    
     /// Base URL for the MangaDex website
     public static let websiteBaseURL = "https://mangadex.org"
-
+    
     /// Base URL for the MangaDex API
     public static let apiBaseURL = "https://api.mangadex.org"
-
+    
     /// Base URL for the MangaDex network API
     public static let networkBaseURL = "https://api.mangadex.network"
-
+    
     /// Base URL for MangaDex uploaded resources
     public static let uploadsBaseURL = "https://uploads.mangadex.org"
     
-
+    
     /// Default value appended after the default User-Agent for all requests made by the MangaDexLib
     public static let defaultUserAgent = "MangaDexLib"
-
+    
     /// Instance of `MDRequestHandler` used to perform all requests
     public let requestHandler = MDRequestHandler()
-
+    
     /// Session token provided by the API after login
     /// - Note: This token is valid for 15 minutes and must be refreshed afterwards
     public internal(set) var sessionJwt: String? {
@@ -37,25 +37,29 @@ public class MDApi: NSObject {
             requestHandler.authToken = sessionJwt
         }
     }
-
+    
+    public init(refreshJwt: String? = nil) {
+        self.refreshJwt = refreshJwt
+    }
+    
     /// Refresh token provided by the API after login
     /// - Note: This token is valid for 1 month and can be used to obtain a new `sessionJwt`
     public internal(set) var refreshJwt: String?
-
+    
     /// Setter for the User-Agent to use for requests
     public func setUserAgent(_ userAgent: String) {
         requestHandler.setUserAgent(userAgent)
     }
-
+    
     /// TypeAlias for requests completion blocks
     internal typealias MDCompletion = (MDResponse) -> Void
-
+    
 }
 
 // MARK: - MDApi Generic Helper Methods
 
 extension MDApi {
-
+    
     /// Wrapper around MDRequestHandler's get method
     /// - Parameter url: The URL to fetch
     /// - Parameter completion: The completion block called once the request is done
@@ -63,7 +67,7 @@ extension MDApi {
         let completion = requestCompletionBlock(url: url, completion: completion)
         requestHandler.get(url: url, completion: completion)
     }
-
+    
     /// Wrapper around MDRequestHandler's post method
     /// - Parameter url: The URL to load
     /// - Parameter body: The content of the request
@@ -74,7 +78,7 @@ extension MDApi {
         let completion = requestCompletionBlock(url: url, completion: completion)
         requestHandler.post(url: url, content: body, completion: completion)
     }
-
+    
     /// Wrapper around MDRequestHandler's put method
     /// - Parameter url: The URL to load
     /// - Parameter body: The content of the request
@@ -85,7 +89,7 @@ extension MDApi {
         let completion = requestCompletionBlock(url: url, completion: completion)
         requestHandler.put(url: url, content: body, completion: completion)
     }
-
+    
     /// Wrapper around MDRequestHandler's delete method
     /// - Parameter url: The URL to fetch
     /// - Parameter completion: The completion block called once the request is done
@@ -93,7 +97,7 @@ extension MDApi {
         let completion = requestCompletionBlock(url: url, completion: completion)
         requestHandler.delete(url: url, completion: completion)
     }
-
+    
     /// Constructor for a generic completion block
     /// - Parameter url: The URL to load
     /// - Parameter completion: The completion block called once the request is done
@@ -105,7 +109,7 @@ extension MDApi {
                                       content: content,
                                       error: error,
                                       status: httpResponse?.statusCode)
-
+            
             if let statusCode = httpResponse?.statusCode {
                 if statusCode == 403, let body = content, body.contains("captcha_required_exception") {
                     // If there is an error with status code 403, it may be because of a captcha
@@ -133,17 +137,17 @@ extension MDApi {
                     )
                 }
             }
-
+            
             completion(response)
         }
     }
-
+    
 }
 
 // MARK: - MDApi Generic Completion Blocks
 
 extension MDApi {
-
+    
     /// Simple helper method which performs a get, decodes the result as the given type, and calls the completion block
     /// - Parameter url: The URL to fetch
     /// - Parameter completion: The completion block called once the request is done
@@ -154,7 +158,7 @@ extension MDApi {
                 completion(nil, response.error)
                 return
             }
-
+            
             // Parse the response to retreive the list of objects
             do {
                 let results = try MDParser.parse(json: response.content, type: T.self)
@@ -165,7 +169,7 @@ extension MDApi {
             }
         }
     }
-
+    
     /// Simple helper method which performs a post, decodes the result as the given type, and calls the completion block
     /// - Parameter url: The URL to fetch
     /// - Parameter data: The content of the request
@@ -180,7 +184,7 @@ extension MDApi {
                 completion(nil, response.error)
                 return
             }
-
+            
             // Parse the response to retreive the list of objects
             do {
                 let results = try MDParser.parse(json: response.content, type: L.self)
@@ -191,7 +195,7 @@ extension MDApi {
             }
         }
     }
-
+    
     /// Simple helper method which performs a put, decodes the result as the given type, and calls the completion block
     /// - Parameter url: The URL to fetch
     /// - Parameter data: The content of the request
@@ -206,7 +210,7 @@ extension MDApi {
                 completion(nil, response.error)
                 return
             }
-
+            
             // Parse the response to retreive the list of objects
             do {
                 let results = try MDParser.parse(json: response.content, type: L.self)
@@ -217,5 +221,5 @@ extension MDApi {
             }
         }
     }
-
+    
 }
