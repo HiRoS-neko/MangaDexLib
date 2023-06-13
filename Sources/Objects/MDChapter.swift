@@ -198,11 +198,13 @@ public struct MDNumber : Comparable {
     }
     
     let chapterNumber = Regex {
+        Anchor.startOfLine
         TryCapture {
             OneOrMore(.digit)
         } transform: { match in
             Int(match)
         }
+        Anchor.endOfLine
     }
     
     let chapterNumberWithDecimal = Regex {
@@ -262,7 +264,7 @@ public struct MDChapterNumber : Comparable {
     
     public let volume : MDNumber?
     public let chapter: MDNumber
-
+    
     
     init(chapter : String?, volume : String?)
     {
