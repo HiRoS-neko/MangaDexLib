@@ -46,8 +46,9 @@ extension MDPath {
     /// Build the URL to get the logged-in user's list of followed manga
     /// - Parameter pagination: The pagination filter to apply
     /// - Returns: The MangaDex URL
-    static func getLoggedUserFollowedMangaList(pagination: MDPaginationFilter? = nil) -> URL {
-        let params = pagination?.getParameters() ?? []
+    static func getLoggedUserFollowedMangaList(pagination: MDPaginationFilter? = nil, includes: [MDObjectType]? = nil) -> URL {
+        var params = pagination?.getParameters() ?? []
+        params += MDPath.formatQueryItem(name: "includes", array: includes)
         return buildUrl(for: .user, with: ["follows", Endpoint.manga.rawValue], params: params)
     }
 

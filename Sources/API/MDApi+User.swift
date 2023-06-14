@@ -83,8 +83,9 @@ extension MDApi {
     /// - Parameter completion: The completion block called once the request is done
     /// - Precondition: The user must be logged-in
     public func getLoggedUserFollowedMangaList(pagination: MDPaginationFilter? = nil,
+                                               includes: [MDObjectType]? = nil,
                                                completion: @escaping (MDResultList<MDManga>?, MDApiError?) -> Void) {
-        let url = MDPath.getLoggedUserFollowedMangaList(pagination: pagination)
+        let url = MDPath.getLoggedUserFollowedMangaList(pagination: pagination, includes: includes)
         performBasicGetCompletion(url: url, completion: completion)
     }
 
