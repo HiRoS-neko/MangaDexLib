@@ -172,6 +172,7 @@ extension MDLibApiTests {
     func testGetMangaFeed() throws {
         let mangaId = "f9c33607-9180-4ba6-b85c-e4b5faee7192" // Official "Test" Manga
         let expectation = self.expectation(description: "Get the manga's chapters")
+        //var filter = MDFeedFilter(locales: [Locale.init(identifier: "vi"), Locale.init(identifier: "en"),])
         api.getMangaFeed(mangaId: mangaId) { (result, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(result)

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RegexBuilder
 
 /// A superclass for filters used during search
 public class MDPaginationFilter: Encodable {
@@ -33,11 +34,21 @@ public class MDPaginationFilter: Encodable {
         // Create a URLQueryItem for each dictionary entry
         var params: [URLQueryItem] = []
         for (key, value) in data {
-            params.append(URLQueryItem(name: key, value: value as? String))
+            var keyReplaced = key
+            if keyReplaced.contains(paramsBrackets) {
+                keyReplaced.replace(paramsBrackets, with: "[]")
+            }
+            params.append(URLQueryItem(name: keyReplaced, value: value as? String))
         }
         return params
     }
 
+    let paramsBrackets = Regex{
+        One("[")
+        OneOrMore(.digit)
+        One("]")
+    }
+    
     public init(limit: Int, offset: Int = 0){
         self.limit = limit
         self.offset = offset
