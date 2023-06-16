@@ -89,6 +89,16 @@ extension MDApi {
         performBasicGetCompletion(url: url, completion: completion)
     }
 
+    /// Check if the manga is followed by the logged-in user
+    /// - Parameter pagination: The pagination filter to apply
+    /// - Parameter completion: The completion block called once the request is done
+    /// - Precondition: The user must be logged-in
+    public func getLoggedUserFollowsMangaList(mangaId : String,
+                                               completion: @escaping (MDResult<String>?, MDApiError?) -> Void) {
+        let url = MDPath.getLoggedUserFollowsManga(mangaId: mangaId)
+        performBasicGetCompletion(url: url, completion: completion)
+    }
+    
     /// Get the logged-in user's followed manga feed (aka their list of recent chapters)
     /// - Parameter filter: The filter to apply
     /// - Parameter completion: The completion block called once the request is done

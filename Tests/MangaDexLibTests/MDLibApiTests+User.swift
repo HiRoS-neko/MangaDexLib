@@ -95,6 +95,19 @@ extension MDLibApiTests {
         waitForExpectations(timeout: 15, handler: nil)
     }
 
+    
+    func testGetLoggedUserFollowsMangaList() throws {
+        try login(api: api, credentialsKey: "AuthRegular")
+        let mangaId = "32d76d19-8a05-4db0-9fc2-e0b0648fe9d0" // Solo leveling
+        let expectation = self.expectation(description: "Get the user's followed mangas")
+        api.getLoggedUserFollowsMangaList(mangaId: mangaId, completion: { result, error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(result)
+            expectation.fulfill()
+        })
+        waitForExpectations(timeout: 15, handler: nil)
+    }
+    
     func testGetLoggedUserFollowedMangaFeed() throws {
         try login(api: api, credentialsKey: "AuthRegular")
         let expectation = self.expectation(description: "Get the user's followed manga feed")
