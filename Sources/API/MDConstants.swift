@@ -163,6 +163,21 @@ public enum MDSortCriteria: String, Codable {
 
     /// Sort depending on the username
     case username = "username"
+    
+    /// Sort depending on the title
+    case title = "title"
+    
+    /// Sort depending on the year
+    case year = "year"
+    
+    /// Sort depending on the latest uploaded chapter
+    case latestUpdate = "latestUploadedChapter"
+    
+    /// Sort depending on the folowed count
+    case followCount = "followedCount"
+    
+    /// Sort depending on the relevance
+    case relevance = "relevance"
 }
 
 /// Sort order for lists of objects
