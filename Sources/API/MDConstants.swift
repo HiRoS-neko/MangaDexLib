@@ -57,6 +57,12 @@ public enum MDReadingStatus: String, Codable {
 
     /// The user has marked the manga as read
     case completed = "completed"
+    
+    /// Only used to filter for ui
+    case all = "all"
+    
+    /// Only used to filter for ui
+    case none = "none"
 }
 
 /// Rating of a manga's content
