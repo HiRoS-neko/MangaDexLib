@@ -43,6 +43,9 @@ public class MDChapterFilter: MDPaginationFilter {
 
     /// Sort order for the results
     public var order: [MDSortCriteria: MDSortOrder]?
+    
+    /// Content ratings to include
+    public var contentRating: [MDContentRating]?
 
     /// A list of object ids to which to limit the results
     /// - Note: Limited to 100 per request
@@ -73,6 +76,7 @@ public class MDChapterFilter: MDPaginationFilter {
         case updatedAtSince
         case publishedAtSince
         case order
+        case contentRating
         case ids
     }
 
@@ -90,6 +94,7 @@ public class MDChapterFilter: MDPaginationFilter {
         try encode(key: CodingKeys.updatedAtSince, value: updatedAtSince, to: &container)
         try encode(key: CodingKeys.publishedAtSince, value: publishedAtSince, to: &container)
         try encode(key: CodingKeys.order, order: order ?? [:], to: &container)
+        try encode(key: CodingKeys.contentRating, values: contentRating ?? [], to: &container)
         try encode(key: CodingKeys.ids, values: ids ?? [], to: &container)
         try super.encode(to: encoder)
     }

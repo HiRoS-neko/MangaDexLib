@@ -53,6 +53,9 @@ extension MDPath {
 
         /// Endpoint for legacy object mappings
         case ping = "ping"
+        
+        /// Endpoint for statistics of objects
+        case statistics = "statistics"
     }
 
 }

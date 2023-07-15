@@ -134,7 +134,7 @@ extension MDApi {
     /// - Parameter includes: The additional relationships to load (see Reference Expansion)
     /// - Parameter completion: The completion block called once the request is done
     public func getMangaFeed(mangaId: String,
-                             filter: MDFeedFilter? = nil,
+                             filter: MDChapterFilter? = nil,
                              includes: [MDObjectType]? = nil,
                              completion: @escaping (MDResultList<MDChapter>?, MDApiError?) -> Void) {
         let url = MDPath.getMangaFeed(mangaId: mangaId, filter: filter, includes: includes)

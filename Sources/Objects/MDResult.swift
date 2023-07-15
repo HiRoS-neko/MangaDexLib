@@ -28,6 +28,10 @@ public struct MDResult<T: Decodable>: Decodable {
     /// The errors contained in this response
     /// - Note: This will be `nil` if the status is `ok`
     public let errors: [MDError]?
+    
+    /// The statistics contained in the response
+    ///  - Note: This will be `nil` if the response was not from a statistics endpoint
+    public let statistics: [String : T]?
 
 }
 
@@ -40,6 +44,7 @@ extension MDResult {
         case token
         case message
         case errors
+        case statistics
     }
 
 }

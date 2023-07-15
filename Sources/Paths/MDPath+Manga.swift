@@ -107,7 +107,7 @@ extension MDPath {
     /// - Parameter filter: The filter to apply
     /// - Parameter includes: The additional relationships to load (see Reference Expansion)
     /// - Returns: The MangaDex URL
-    static func getMangaFeed(mangaId: String, filter: MDFeedFilter? = nil, includes: [MDObjectType]? = nil) -> URL {
+    static func getMangaFeed(mangaId: String, filter: MDPaginationFilter? = nil, includes: [MDObjectType]? = nil) -> URL {
         var params = filter?.getParameters() ?? []
         params += MDPath.formatQueryItem(name: "includes", array: includes)
         return buildUrl(for: .manga, with: [mangaId, "feed"], params: params)
