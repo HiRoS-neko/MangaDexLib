@@ -13,7 +13,7 @@ import Foundation
 public struct MDStatistic: Decodable {
     public let comments: MDComment?
 
-    public let raing: MDRating?
+    public let rating: MDRating?
 
     public let follows: Int?
 }
